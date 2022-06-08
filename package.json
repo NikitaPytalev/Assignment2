@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Assignment 2 - File Manager",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   },

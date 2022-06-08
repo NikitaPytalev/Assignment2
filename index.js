@@ -1,5 +1,6 @@
-//import {}
-let input;
+import { homedir } from 'os';
+
+let currentDirectoryPath = homedir();
 
 console.log('Welcome to the File Manager, Username!');
 
@@ -11,8 +12,7 @@ process.stdin.on('data', chunk => {
 
     console.log('Input: ' + chunk);
 
-    let path_to_working_directory = '/';
-    console.log(`You are currently in ${path_to_working_directory}`)
+    console.log(`You are currently in ${currentDirectoryPath}`)
 });
 
 process.on('SIGINT', function() {

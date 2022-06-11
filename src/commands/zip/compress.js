@@ -1,34 +1,28 @@
 import { OPERATION_FAILED } from '../../consts.js';
 import * as utils from '../../utils.js';
-import  fs from 'fs';
+import fs from 'fs';
 import zlib from 'zlib';
-import { basename, isAbsolute, join } from 'path';
+import { basename, extname, join } from 'path';
+
+const BROTLI_EXT = '.br';
 
 const compress = async payload => {
     utils.validateArgumentsCount(payload.args.length, 2);
 
-    const currentPath = process.cwd();
+    const src = utils.toAbsolute(payload.args[0]);
+    let dest = utils.toAbsolute(payload.args[1]);
 
-    let pathToFile = payload.args[0];
-    let pathToArchive = payload.args[1];
+    await utils.validateIsFile(src);
 
-    if (!isAbsolute(pathToFile)) {
-        pathToFile = join(currentPath, pathToFile);
+    if (!extname(dest).endsWith(BROTLI_EXT)) {
+        dest += BROTLI_EXT;
     }
-
-    if (!isAbsolute(pathToArchive)) {
-        pathToArchive = join(currentPath, pathToArchive);
-    }
-
-    await utils.validateIsFile(pathToFile);
-
-    await utils.validateIsDirectory(pathToArchive);
 
     try{
         var zip = zlib.createBrotliCompress();
     
-        var read = fs.createReadStream(pathToFile);
-        var write = fs.createWriteStream(join(pathToArchive, basename(pathToFile) + '.br'));
+        var read = fs.createReadStream(src);
+        var write = fs.createWriteStream(dest);
     
         read.pipe(zip).pipe(write);	
     } catch {

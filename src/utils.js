@@ -1,5 +1,6 @@
 import { INVALID_INPUT, OPERATION_FAILED } from "./consts.js";
 import { lstat } from 'fs/promises';
+import { join, isAbsolute } from 'path';
 
 export const validateArgumentsCount = (actual, expected) => {
     if (actual !== expected) {
@@ -20,3 +21,7 @@ export const validateIsFile = async path => {
     if (!isFile) 
         throw new Error(OPERATION_FAILED);
 };
+
+export const toAbsolute = path => {
+    return isAbsolute(path) ? path : join(process.cwd(), path);
+}

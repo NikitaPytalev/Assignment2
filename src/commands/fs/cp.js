@@ -1,30 +1,21 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount, validateIsDirectory } from '../../utils.js';
+import * as utils from '../../utils.js';
 import { copyFile } from 'fs/promises';
-import { basename, isAbsolute, join } from 'path';
+import { basename, join } from 'path';
 
 const cp = async payload => {
-    validateArgumentsCount(payload.args.length, 2);
+    utils.validateArgumentsCount(payload.args.length, 2);
 
-    const currentPath = process.cwd();
+    const src = utils.toAbsolute(payload.args[0]);
+    const dest = utils.toAbsolute(payload.args[1]);
 
-    let pathToFile = payload.args[0];
-    let pathToNewDirectory = payload.args[1];
+    await utils.validateIsFile(src);
+    await utils.validateIsDirectory(dest);
 
-    if (!isAbsolute(pathToFile)) {
-        pathToFile = join(currentPath, pathToFile);
-    }
-
-    if (!isAbsolute(pathToNewDirectory)) {
-        pathToNewDirectory = join(currentPath, pathToNewDirectory);
-    }
-
-    await validateIsDirectory(pathToNewDirectory);
-
-    const newFilePath = join(pathToNewDirectory, basename(pathToFile));
+    const destFilePath = join(dest, basename(src));
     
     try{
-        await copyFile(pathToFile, newFilePath);
+        await copyFile(src, destFilePath);
     } catch {
         throw new Error(OPERATION_FAILED);
     }

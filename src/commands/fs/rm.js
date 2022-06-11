@@ -1,20 +1,14 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount } from '../../utils.js';
+import { toAbsolute, validateArgumentsCount } from '../../utils.js';
 import { unlink } from 'fs/promises';
-import { isAbsolute, join } from 'path';
 
 const rm = async payload => {
     validateArgumentsCount(payload.args.length, 1);
 
-    const currentPath = process.cwd();
-    let pathToFile = payload.args[0];
-
-    if (!isAbsolute(pathToFile)) {
-        pathToFile = join(currentPath, pathToFile);
-    }
+    const filePath = toAbsolute(payload.args[0]);
 
     try{
-        await unlink(pathToFile);
+        await unlink(filePath);
     } catch {
         throw new Error(OPERATION_FAILED);
     }

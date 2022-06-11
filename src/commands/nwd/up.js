@@ -1,10 +1,9 @@
 import { validateArgumentsCount } from '../../utils.js';
+import { join } from 'path';
 
 const up = async payload => {
     validateArgumentsCount(payload.args.length, 0);
-
-    const fileManager = payload.source;
-    await fileManager.updateCurrentPath('../');
+    process.chdir(join(process.cwd(), '../'));
 } 
 
 export default up;

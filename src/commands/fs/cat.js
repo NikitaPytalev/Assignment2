@@ -1,12 +1,11 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount, validateIsFile } from '../../utils.js';
-import { readFile, lstat } from 'fs/promises';
-import { join } from 'path';
+import { validateArgumentsCount, validateIsFile, toAbsolute } from '../../utils.js';
+import { readFile } from 'fs/promises';
 
 const cat = async payload => {
     validateArgumentsCount(payload.args.length, 1);
 
-    const filePath = join(payload.source.currentPath, payload.args[0]);
+    const filePath = toAbsolute(payload.args[0]);
 
     await validateIsFile(filePath);
     

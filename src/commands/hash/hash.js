@@ -1,24 +1,17 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount, validateIsFile } from '../../utils.js';
+import * as utils from '../../utils.js';
 import { readFile } from 'fs/promises';
-import { isAbsolute, join } from 'path';
 import { createHash } from 'crypto';
 
 const hash = async payload => {
-    validateArgumentsCount(payload.args.length, 1);
+    utils.validateArgumentsCount(payload.args.length, 1);
 
-    const currentPath = process.cwd();
+    const filePath = utils.toAbsolute(payload.args[0]);
 
-    let pathToFile = payload.args[0];
-
-    if (!isAbsolute(pathToFile)) {
-        pathToFile = join(currentPath, pathToFile);
-    }
-
-    await validateIsFile(pathToFile);
+    await utils.validateIsFile(filePath);
 
     try{
-        const data = await readFile(pathToFile);
+        const data = await readFile(filePath);
         const hex = createHash('sha256').update(data).digest('hex');
 
         console.log(hex);

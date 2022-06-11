@@ -1,15 +1,12 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount } from '../../utils.js';
+import { validateArgumentsCount, toAbsolute } from '../../utils.js';
 import { writeFile } from 'fs/promises';
-import { join } from 'path';
 
 const add = async payload => {
     validateArgumentsCount(payload.args.length, 1);
 
-    const currentPath = process.cwd();
-    
     const fileName = payload.args[0];
-    const filePath = join(currentPath, fileName);
+    const filePath = toAbsolute(fileName);
 
     try{
         await writeFile(filePath, '', { flag: 'wx' });

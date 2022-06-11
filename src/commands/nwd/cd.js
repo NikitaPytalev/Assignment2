@@ -1,14 +1,14 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount } from '../../utils.js';
+import * as utils from '../../utils.js';
 
 const cd = async payload => {
-    validateArgumentsCount(payload.args.length, 1);
+    utils.validateArgumentsCount(payload.args.length, 1);
 
-    const fileManager = payload.source;
-    const inputPath = payload.args[0];
+    const dest = utils.toAbsolute(payload.args[0]);
 
     try{
-        return await fileManager.updateCurrentPath(inputPath);
+        await utils.validateIsDirectory(dest);
+        process.chdir(dest);
     } catch {
         throw new Error(OPERATION_FAILED);
     }

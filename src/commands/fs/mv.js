@@ -1,30 +1,21 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount, validateIsDirectory } from '../../utils.js';
+import * as utils from '../../utils.js';
 import { rename } from 'fs/promises';
-import { basename, isAbsolute, join } from 'path';
+import { basename, join } from 'path';
 
 const mv = async payload => {
-    validateArgumentsCount(payload.args.length, 2);
+    utils.validateArgumentsCount(payload.args.length, 2);
 
-    const currentPath = process.cwd();
+    const src = utils.toAbsolute(payload.args[0]);
+    const dest = utils.toAbsolute(payload.args[1]);
+
+    await utils.validateIsFile(src);
+    await utils.validateIsDirectory(dest);
+
+    const destFilePath = join(dest, basename(src));
     
-    let pathToFile = payload.args[0];
-    let pathToNewDirectory = payload.args[1];
-
-    if (!isAbsolute(pathToFile)) {
-        pathToFile = join(currentPath, pathToFile);
-    }
-
-    if (!isAbsolute(pathToNewDirectory)) {
-        pathToNewDirectory = join(currentPath, pathToNewDirectory);
-    }
-
-    await validateIsDirectory(pathToNewDirectory);
-
-    const newfilePath = join(pathToNewDirectory, basename(pathToFile));
-
     try{
-        await rename(pathToFile, newfilePath);
+        await rename(src, destFilePath);
     } catch {
         throw new Error(OPERATION_FAILED);
     }

@@ -1,19 +1,29 @@
 import { homedir } from 'os';
+import getCommand from './commands/index.js';
 
-let currentDirectoryPath = homedir();
+let currentPath = homedir();
 let userName = getUserNameFromArgs();
 
 console.log(`Welcome to the File Manager, ${userName}!`);
 
-process.stdin.on('data', chunk => {
-    const chunkToString = chunk.toString().trim()
-    if(chunkToString === ".exit") {
+process.stdin.on('data', input => {
+    const stringInput = input.toString().trim()
+    if(stringInput === ".exit") {
         process.exit();
     }
 
-    console.log('Input: ' + chunk);
+    //console.log('Input: ' + chunk);
+    const command = getCommand(stringInput);
 
-    console.log(`You are currently in ${currentDirectoryPath}`)
+    const payload = {
+        source: this,
+        currentPath,
+        command : stringInput,
+    };
+
+    command(payload);
+
+    console.log(`You are currently in ${currentPath}`)
 });
 
 process.on('SIGINT', function() {

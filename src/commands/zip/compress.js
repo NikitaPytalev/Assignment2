@@ -7,7 +7,7 @@ import { basename, isAbsolute, join } from 'path';
 
 const compress = async payload => {
     validateArgumentsCount(payload.args.length, 2);
-    
+
     const { currentPath } = payload.source;
 
     let pathToFile = payload.args[0];
@@ -24,8 +24,7 @@ const compress = async payload => {
     const isFile = await (await lstat(pathToFile)).isFile();
     if (!isFile) throw new Error(consts.OPERATION_FAILED);
 
-    const isDirectory = await (await lstat(pathToArchive)).isDirectory();
-    if (!isDirectory) throw new Error(consts.OPERATION_FAILED);
+    await validateIsDirectory(pathToArchive);
 
     try{
         var zip = zlib.createBrotliCompress();

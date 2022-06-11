@@ -19,8 +19,7 @@ const mv = async payload => {
         pathToNewDirectory = join(currentPath, pathToNewDirectory);
     }
 
-    const isDirectory = await (await lstat(pathToNewDirectory)).isDirectory();
-    if (!isDirectory) throw Error(consts.OPERATION_FAILED);
+    await validateIsDirectory(pathToNewDirectory);
 
     const newfilePath = join(pathToNewDirectory, basename(pathToFile));
 

@@ -1,8 +1,8 @@
-import { access, lstat } from 'fs/promises';
+import { validateIsDirectory } from './utils.js';
+import { access } from 'fs/promises';
 import getCommand from './commands/index.js';
 import { homedir } from 'os';
 import { isAbsolute, join } from 'path';
-import * as consts from './consts.js';
 
 class FileManager {
     constructor () {
@@ -19,8 +19,7 @@ class FileManager {
 
         await access(newPath);
 
-        const isDirectory = await (await lstat(newPath)).isDirectory();
-        if (!isDirectory) throw new Error(consts.OPERATION_FAILED);
+        await validateIsDirectory(newPath);
 
         this.currentPath = newPath;
     }

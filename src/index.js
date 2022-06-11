@@ -1,4 +1,4 @@
-import FileManager from './FileManager.js';
+import getCommand from './commands/index.js';
 import { homedir } from 'os';
 
 const userName = getUserNameFromArgs();
@@ -6,8 +6,6 @@ const userName = getUserNameFromArgs();
 console.log(`Welcome to the File Manager, ${ userName }!`);
 
 process.chdir(homedir());
-
-const fileManager = new FileManager();
 
 printCurrentDirectoryMessage(process.cwd());
 
@@ -20,7 +18,7 @@ process.stdin.on('data', async input => {
     }
 
     try {
-        await fileManager.execute(stringInput);
+        await execute(stringInput);
     } catch (e) {
         console.error(e.message);
     }
@@ -47,3 +45,13 @@ function printCurrentDirectoryMessage (currentPath) {
 function printGoodbyeMessage (userName) {
     console.log(`Thank you for using File Manager, ${ userName }!`);
 }
+
+async function execute (input) {
+    const args = input.split(' ');
+    
+    const commandName = args.shift();
+
+    const command = getCommand(commandName);
+
+    await command(args);
+} 

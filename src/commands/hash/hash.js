@@ -1,12 +1,12 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount } from '../../utils.js';
-import { readFile, lstat } from 'fs/promises';
+import { validateArgumentsCount, validateIsFile } from '../../utils.js';
+import { readFile } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 import { createHash } from 'crypto';
 
 const hash = async payload => {
     validateArgumentsCount(payload.args.length, 1);
-    
+
     const { currentPath } = payload.source;
 
     let pathToFile = payload.args[0];
@@ -15,8 +15,7 @@ const hash = async payload => {
         pathToFile = join(currentPath, pathToFile);
     }
 
-    const isFile = await (await lstat(pathToFile)).isFile();
-    if (!isFile) throw new Error(OPERATION_FAILED);
+    await validateIsFile(pathToFile);
 
     try{
         const data = await readFile(pathToFile);

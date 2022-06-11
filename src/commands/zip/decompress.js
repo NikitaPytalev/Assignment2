@@ -1,13 +1,12 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount } from '../../utils.js';
-import { lstat } from 'fs/promises';
+import { validateArgumentsCount, validateIsFile } from '../../utils.js';
 import fs from 'fs';
 import zlib from 'zlib';
 import { isAbsolute, join } from 'path';
 
 const decompress = async payload => {
     validateArgumentsCount(payload.args.length, 2);
-    
+
     const { currentPath } = payload.source;
 
     let src = payload.args[0];
@@ -21,8 +20,7 @@ const decompress = async payload => {
         dest = join(currentPath, dest);
     }
 
-    const isFile = await (await lstat(src)).isFile();
-    if (!isFile) throw new Error(consts.OPERATION_FAILED);
+    await validateIsFile(src);
 
     try{
         var unzip = zlib.createBrotliDecompress();

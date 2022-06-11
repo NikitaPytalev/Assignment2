@@ -1,12 +1,11 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount } from '../../utils.js';
-import { lstat } from 'fs/promises';
+import * as utils from '../../utils.js';
 import  fs from 'fs';
 import zlib from 'zlib';
 import { basename, isAbsolute, join } from 'path';
 
 const compress = async payload => {
-    validateArgumentsCount(payload.args.length, 2);
+    utils.validateArgumentsCount(payload.args.length, 2);
 
     const { currentPath } = payload.source;
 
@@ -21,10 +20,9 @@ const compress = async payload => {
         pathToArchive = join(currentPath, pathToArchive);
     }
 
-    const isFile = await (await lstat(pathToFile)).isFile();
-    if (!isFile) throw new Error(consts.OPERATION_FAILED);
+    await utils.validateIsFile(pathToFile);
 
-    await validateIsDirectory(pathToArchive);
+    await utils.validateIsDirectory(pathToArchive);
 
     try{
         var zip = zlib.createBrotliCompress();

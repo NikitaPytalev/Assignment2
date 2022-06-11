@@ -1,6 +1,6 @@
 import { OPERATION_FAILED } from '../../consts.js';
-import { validateArgumentsCount } from '../../utils.js';
-import { rename, lstat } from 'fs/promises';
+import { validateArgumentsCount, validateIsDirectory } from '../../utils.js';
+import { rename } from 'fs/promises';
 import { basename, isAbsolute, join } from 'path';
 
 const mv = async payload => {

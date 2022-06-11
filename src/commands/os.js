@@ -1,4 +1,4 @@
-import { cpus, EOL, homedir, userInfo } from 'os';
+import { arch, cpus, EOL, homedir, userInfo } from 'os';
 
 const os = async payload => {
     const arg = payload.args[0].slice(2);
@@ -24,6 +24,9 @@ const os = async payload => {
             break;
         case 'username':
             console.log(userInfo().username);
+            break;
+        case 'architecture':
+            console.log(arch());
             break;
     }
 };

@@ -1,10 +1,13 @@
 import { OPERATION_FAILED } from '../../consts.js';
+import { validateArgumentsCount } from '../../utils.js';
 import { lstat } from 'fs/promises';
 import  fs from 'fs';
 import zlib from 'zlib';
 import { basename, isAbsolute, join } from 'path';
 
 const compress = async payload => {
+    validateArgumentsCount(payload.args.length, 2);
+    
     const { currentPath } = payload.source;
 
     let pathToFile = payload.args[0];

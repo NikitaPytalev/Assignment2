@@ -1,8 +1,11 @@
 import { OPERATION_FAILED } from '../../consts.js';
+import { validateArgumentsCount } from '../../utils.js';
 import { unlink } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 
 const rm = async payload => {
+    validateArgumentsCount(payload.args.length, 1);
+
     const { currentPath } = payload.source;
     let pathToFile = payload.args[0];
 

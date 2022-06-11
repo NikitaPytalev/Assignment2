@@ -1,10 +1,13 @@
 import { OPERATION_FAILED } from '../../consts.js';
+import { validateArgumentsCount } from '../../utils.js';
 import { lstat } from 'fs/promises';
 import fs from 'fs';
 import zlib from 'zlib';
 import { isAbsolute, join } from 'path';
 
 const decompress = async payload => {
+    validateArgumentsCount(payload.args.length, 2);
+    
     const { currentPath } = payload.source;
 
     let src = payload.args[0];

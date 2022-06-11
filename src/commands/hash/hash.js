@@ -1,9 +1,12 @@
 import { OPERATION_FAILED } from '../../consts.js';
+import { validateArgumentsCount } from '../../utils.js';
 import { readFile, lstat } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 import { createHash } from 'crypto';
 
 const hash = async payload => {
+    validateArgumentsCount(payload.args.length, 1);
+    
     const { currentPath } = payload.source;
 
     let pathToFile = payload.args[0];

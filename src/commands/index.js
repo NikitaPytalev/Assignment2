@@ -2,6 +2,7 @@ import add from './add.js';
 import cat from './cat.js';
 import cd from './cd.js';
 import cp from './cp.js';
+import compress from './compress.js';
 import hash from './hash.js';
 import ls from './ls.js';
 import mv from './mv.js';
@@ -15,6 +16,7 @@ const commands = {
     cat,
     cd,
     cp,
+    compress,
     hash,
     ls,
     mv,

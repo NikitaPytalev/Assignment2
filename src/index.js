@@ -31,8 +31,8 @@ process.on('SIGINT', () => {
 });
 
 function getUserNameFromArgs () {
-    let usernameKeyValue = process.argv.slice(2).filter(str => str.startsWith('--username'))[0];
-    let userName = usernameKeyValue.split('=')[1];
+    let usernameKeyValue = process.argv?.slice(2).filter(str => str.startsWith('--username'))[0];
+    let userName = usernameKeyValue?.split('=')[1] ?? 'User';
 
     return userName;
 };

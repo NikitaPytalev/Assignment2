@@ -24,4 +24,4 @@ export const validateIsFile = async path => {
 
 export const toAbsolute = path => {
     return isAbsolute(path) ? path : join(process.cwd(), path);
-}
+};

@@ -1,3 +1,4 @@
+import { OPERATION_FAILED } from '../consts.js';
 import { unlink } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 
@@ -9,7 +10,11 @@ const rm = async payload => {
         pathToFile = join(currentPath, pathToFile);
     }
 
-    await unlink(pathToFile);
+    try{
+        await unlink(pathToFile);
+    } catch {
+        throw new Error(OPERATION_FAILED);
+    }
 };
 
 export default rm;

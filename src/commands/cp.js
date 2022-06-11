@@ -1,3 +1,4 @@
+import { OPERATION_FAILED } from '../consts.js';
 import { copyFile, lstat } from 'fs/promises';
 import { basename, isAbsolute, join } from 'path';
 import * as consts from '../consts.js';
@@ -20,8 +21,12 @@ const cp = async payload => {
     if (!isDirectory) throw Error(consts.OPERATION_FAILED);
 
     const newFilePath = join(pathToNewDirectory, basename(pathToFile));
-
-    await copyFile(pathToFile, newFilePath);
+    
+    try{
+        await copyFile(pathToFile, newFilePath);
+    } catch {
+        throw new Error(OPERATION_FAILED);
+    }
 };
 
 export default cp;

@@ -1,3 +1,4 @@
+import { OPERATION_FAILED } from '../consts.js';
 import { lstat } from 'fs/promises';
 import  fs from 'fs';
 import zlib from 'zlib';
@@ -18,17 +19,21 @@ const compress = async payload => {
     }
 
     const isFile = await (await lstat(pathToFile)).isFile();
-    if (!isFile) throw Error(consts.OPERATION_FAILED);
+    if (!isFile) throw new Error(consts.OPERATION_FAILED);
 
     const isDirectory = await (await lstat(pathToArchive)).isDirectory();
-    if (!isDirectory) throw Error(consts.OPERATION_FAILED);
+    if (!isDirectory) throw new Error(consts.OPERATION_FAILED);
 
-    var zip = zlib.createBrotliCompress();
+    try{
+        var zip = zlib.createBrotliCompress();
     
-    var read = fs.createReadStream(pathToFile);
-    var write = fs.createWriteStream(join(pathToArchive, basename(pathToFile) + '.br'));
-
-    read.pipe(zip).pipe(write);	
+        var read = fs.createReadStream(pathToFile);
+        var write = fs.createWriteStream(join(pathToArchive, basename(pathToFile) + '.br'));
+    
+        read.pipe(zip).pipe(write);	
+    } catch {
+        throw new Error(OPERATION_FAILED);
+    }
 };
 
 export default compress;

@@ -1,7 +1,7 @@
+import { OPERATION_FAILED } from '../consts.js';
 import { readFile, lstat } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 import { createHash } from 'crypto';
-import * as consts from '../consts.js';
 
 const hash = async payload => {
     const { currentPath } = payload.source;
@@ -13,12 +13,16 @@ const hash = async payload => {
     }
 
     const isFile = await (await lstat(pathToFile)).isFile();
-    if (!isFile) throw Error(consts.OPERATION_FAILED);
+    if (!isFile) throw new Error(OPERATION_FAILED);
 
-    const data = await readFile(pathToFile);
-    const hex = createHash('sha256').update(data).digest('hex');
+    try{
+        const data = await readFile(pathToFile);
+        const hex = createHash('sha256').update(data).digest('hex');
 
-    console.log(hex);
+        console.log(hex);
+    } catch {
+        throw new Error(OPERATION_FAILED);
+    }
 };
 
 export default hash;

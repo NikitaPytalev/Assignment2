@@ -1,13 +1,14 @@
 import { arch, cpus, EOL, homedir, userInfo } from 'os';
+import { INVALID_INPUT } from '../consts.js';
 
 const os = async payload => {
-    const arg = payload.args[0].slice(2);
+    const arg = payload.args[0];
 
     switch (arg) {
-        case 'EOL':
+        case '--EOL':
             console.log(JSON.stringify(EOL));
             break;
-        case 'cpus':
+        case '--cpus':
             const cpuList = cpus().map(cpu => {
                 const cpuView = {
                     model: cpu.model,
@@ -19,15 +20,17 @@ const os = async payload => {
 
             console.log(cpuList);
             break;
-        case 'homedir':
+        case '--homedir':
             console.log(homedir());
             break;
-        case 'username':
+        case '--username':
             console.log(userInfo().username);
             break;
-        case 'architecture':
+        case '--architecture':
             console.log(arch());
             break;
+        default:
+            throw new Error(INVALID_INPUT);
     }
 };
 

@@ -20,7 +20,7 @@ class FileManager {
         await access(newPath);
 
         const isDirectory = await (await lstat(newPath)).isDirectory();
-        if (!isDirectory) throw Error(consts.OPERATION_FAILED);
+        if (!isDirectory) throw new Error(consts.OPERATION_FAILED);
 
         this.currentPath = newPath;
     }
@@ -37,11 +37,7 @@ class FileManager {
             args
         };
     
-        try{
-            await command(payload);
-        } catch {
-            throw Error(consts.OPERATION_FAILED);
-        }
+        await command(payload);
     } 
 }
 

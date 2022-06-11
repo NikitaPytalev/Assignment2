@@ -1,3 +1,4 @@
+import { OPERATION_FAILED } from '../consts.js';
 import { lstat } from 'fs/promises';
 import fs from 'fs';
 import zlib from 'zlib';
@@ -18,14 +19,18 @@ const decompress = async payload => {
     }
 
     const isFile = await (await lstat(src)).isFile();
-    if (!isFile) throw Error(consts.OPERATION_FAILED);
+    if (!isFile) throw new Error(consts.OPERATION_FAILED);
 
-    var unzip = zlib.createBrotliDecompress();
+    try{
+        var unzip = zlib.createBrotliDecompress();
 
-    var read = fs.createReadStream(src);
-    var write = fs.createWriteStream(dest);
-
-    read.pipe(unzip).pipe(write);
+        var read = fs.createReadStream(src);
+        var write = fs.createWriteStream(dest);
+    
+        read.pipe(unzip).pipe(write);
+    } catch {
+        throw new Error(OPERATION_FAILED);
+    }
 };
 
 export default decompress;

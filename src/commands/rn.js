@@ -1,3 +1,4 @@
+import { OPERATION_FAILED } from '../consts.js';
 import { rename } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 
@@ -12,7 +13,11 @@ const rn = async payload => {
 
     const newfilePath = join(currentPath, payload.args[1]);
 
-    await rename(pathToFile, newfilePath)
+    try{
+        await rename(pathToFile, newfilePath);
+    } catch {
+        throw new Error(OPERATION_FAILED);
+    } 
 };
 
 export default rn;

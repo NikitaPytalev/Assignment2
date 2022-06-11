@@ -1,3 +1,4 @@
+import { INVALID_INPUT } from '../consts.js';
 import add from './add.js';
 import cat from './cat.js';
 import cd from './cd.js';
@@ -29,5 +30,8 @@ const commands = {
 };
 
 export default commandName => {
+    if (!commands.hasOwnProperty(commandName)) {
+        throw new Error(INVALID_INPUT);
+    }
     return commands[commandName];
 }

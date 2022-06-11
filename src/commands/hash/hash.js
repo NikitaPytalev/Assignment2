@@ -7,7 +7,7 @@ import { createHash } from 'crypto';
 const hash = async payload => {
     validateArgumentsCount(payload.args.length, 1);
 
-    const { currentPath } = payload.source;
+    const currentPath = process.cwd();
 
     let pathToFile = payload.args[0];
 

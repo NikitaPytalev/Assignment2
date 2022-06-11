@@ -7,7 +7,7 @@ import { isAbsolute, join } from 'path';
 const decompress = async payload => {
     validateArgumentsCount(payload.args.length, 2);
 
-    const { currentPath } = payload.source;
+    const currentPath = process.cwd();
 
     let src = payload.args[0];
     let dest = payload.args[1];

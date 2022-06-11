@@ -1,12 +1,15 @@
 import FileManager from './FileManager.js';
+import { homedir } from 'os';
 
 const userName = getUserNameFromArgs();
 
 console.log(`Welcome to the File Manager, ${ userName }!`);
 
+process.chdir(homedir());
+
 const fileManager = new FileManager();
 
-printCurrentDirectoryMessage(fileManager.currentPath);
+printCurrentDirectoryMessage(process.cwd());
 
 process.stdin.on('data', async input => {
 
@@ -22,7 +25,7 @@ process.stdin.on('data', async input => {
         console.error(e.message);
     }
 
-    printCurrentDirectoryMessage(fileManager.currentPath);
+    printCurrentDirectoryMessage(process.cwd());
 });
 
 process.on('SIGINT', () => {

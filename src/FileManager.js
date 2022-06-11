@@ -1,27 +1,22 @@
 import { validateIsDirectory } from './utils.js';
 import { access } from 'fs/promises';
 import getCommand from './commands/index.js';
-import { homedir } from 'os';
 import { isAbsolute, join } from 'path';
 
 class FileManager {
-    constructor () {
-        this.currentPath = homedir();
-    }
-
     updateCurrentPath = async path => {
         let newPath;
         if (isAbsolute(path)) {
             newPath = path; 
         } else {
-            newPath = join(this.currentPath , path)
+            newPath = join(process.cwd(), path)
         }
 
         await access(newPath);
 
         await validateIsDirectory(newPath);
 
-        this.currentPath = newPath;
+        process.chdir(newPath);
     }
 
     execute = async input => {

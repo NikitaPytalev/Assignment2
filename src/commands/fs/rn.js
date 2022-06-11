@@ -6,7 +6,7 @@ import { isAbsolute, join } from 'path';
 const rn = async payload => {
     validateArgumentsCount(payload.args.length, 2);
 
-    const { currentPath } = payload.source;
+    const currentPath = process.cwd();
     
     let pathToFile = payload.args[0];
 

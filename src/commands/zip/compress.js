@@ -7,7 +7,7 @@ import { basename, isAbsolute, join } from 'path';
 const compress = async payload => {
     utils.validateArgumentsCount(payload.args.length, 2);
 
-    const { currentPath } = payload.source;
+    const currentPath = process.cwd();
 
     let pathToFile = payload.args[0];
     let pathToArchive = payload.args[1];

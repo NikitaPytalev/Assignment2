@@ -6,10 +6,10 @@ const cat = async args => {
     validateArgumentsCount(args.length, 1);
 
     const filePath = toAbsolute(args[0]);
-
-    await validateIsFile(filePath);
     
     try{
+        await validateIsFile(filePath);
+        
         const text = await readFile(filePath, { encoding: 'utf8'});
         console.log(text)
     } catch {

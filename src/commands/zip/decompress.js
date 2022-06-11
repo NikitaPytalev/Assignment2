@@ -10,13 +10,13 @@ const decompress = async args => {
     const src = utils.toAbsolute(args[0]);
     let dest = utils.toAbsolute(args[1]);
 
-    await utils.validateIsFile(src);
-
     if (!extname(src).endsWith(BROTLI_EXT)) {
         throw new Error(OPERATION_FAILED);
     }
 
     try{
+        await utils.validateIsFile(src);
+
         var unzip = zlib.createBrotliDecompress();
 
         var read = fs.createReadStream(src);

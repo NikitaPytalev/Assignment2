@@ -5,10 +5,10 @@ import { writeFile } from 'fs/promises';
 const add = async args => {
     validateArgumentsCount(args.length, 1);
 
-    const fileName = args[0];
-    const filePath = toAbsolute(fileName);
-
     try{
+        const fileName = args[0];
+        const filePath = toAbsolute(fileName);
+
         await writeFile(filePath, '', { flag: 'wx' });
     } catch {
         throw new Error(OPERATION_FAILED);

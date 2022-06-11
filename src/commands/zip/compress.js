@@ -10,13 +10,13 @@ const compress = async args => {
     const src = utils.toAbsolute(args[0]);
     let dest = utils.toAbsolute(args[1]);
 
-    await utils.validateIsFile(src);
-
     if (!extname(dest).endsWith(BROTLI_EXT)) {
         dest += BROTLI_EXT;
     }
 
     try{
+        await utils.validateIsFile(src);
+        
         var zip = zlib.createBrotliCompress();
     
         var read = fs.createReadStream(src);

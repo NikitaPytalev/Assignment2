@@ -8,9 +8,9 @@ const hash = async args => {
 
     const filePath = utils.toAbsolute(args[0]);
 
-    await utils.validateIsFile(filePath);
-
     try{
+        await utils.validateIsFile(filePath);
+        
         const data = await readFile(filePath);
         const hex = createHash('sha256').update(data).digest('hex');
 

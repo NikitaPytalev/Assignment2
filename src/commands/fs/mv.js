@@ -8,13 +8,13 @@ const mv = async args => {
 
     const src = utils.toAbsolute(args[0]);
     const dest = utils.toAbsolute(args[1]);
-
-    await utils.validateIsFile(src);
-    await utils.validateIsDirectory(dest);
-
-    const destFilePath = join(dest, basename(src));
     
     try{
+        await utils.validateIsFile(src);
+        await utils.validateIsDirectory(dest);
+    
+        const destFilePath = join(dest, basename(src));
+        
         await rename(src, destFilePath);
     } catch {
         throw new Error(OPERATION_FAILED);

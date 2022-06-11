@@ -1,39 +1,46 @@
-import { homedir } from 'os';
-import getCommand from './commands/index.js';
+import FileManager from './FileManager.js';
 
-let currentPath = homedir();
-let userName = getUserNameFromArgs();
+const userName = getUserNameFromArgs();
 
-console.log(`Welcome to the File Manager, ${userName}!`);
+console.log(`Welcome to the File Manager, ${ userName }!`);
 
-process.stdin.on('data', input => {
+const fileManager = new FileManager();
+
+printCurrentDirectoryMessage(fileManager.currentPath);
+
+process.stdin.on('data', async input => {
+
     const stringInput = input.toString().trim()
     if(stringInput === ".exit") {
+        printGoodbyeMessage(userName);
         process.exit();
     }
 
-    //console.log('Input: ' + chunk);
-    const command = getCommand(stringInput);
+    try {
+        await fileManager.execute(stringInput);
+    } catch (e) {
+        console.error(e.message);
+    }
 
-    const payload = {
-        source: this,
-        currentPath,
-        command : stringInput,
-    };
-
-    command(payload);
-
-    console.log(`You are currently in ${currentPath}`)
+    printCurrentDirectoryMessage(fileManager.currentPath);
 });
 
-process.on('SIGINT', function() {
-    console.log(`Thank you for using File Manager, ${userName}!`);
+process.on('SIGINT', () => {
+    printGoodbyeMessage(userName);
     process.exit();
 });
 
-function getUserNameFromArgs() {
+function getUserNameFromArgs () {
     let usernameKeyValue = process.argv.slice(2).filter(str => str.startsWith('--username'))[0];
     let userName = usernameKeyValue.split('=')[1];
 
     return userName;
+};
+
+function printCurrentDirectoryMessage (currentPath) {
+    console.log(`You are currently in ${ currentPath }`)
+}
+
+function printGoodbyeMessage (userName) {
+    console.log(`Thank you for using File Manager, ${ userName }!`);
 }

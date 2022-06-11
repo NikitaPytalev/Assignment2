@@ -1,4 +1,4 @@
-import { cpus, EOL } from 'os';
+import { cpus, EOL, homedir } from 'os';
 
 const os = async payload => {
     const arg = payload.args[0].slice(2);
@@ -18,6 +18,9 @@ const os = async payload => {
             });
 
             console.log(cpuList);
+            break;
+        case 'homedir':
+            console.log(homedir());
             break;
     }
 };

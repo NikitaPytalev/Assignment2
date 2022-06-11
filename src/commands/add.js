@@ -1,4 +1,4 @@
-import { open } from 'fs/promises';
+import { writeFile } from 'fs/promises';
 import { join } from 'path';
 
 const add = async payload => {
@@ -6,7 +6,7 @@ const add = async payload => {
     const fileName = payload.args[0];
     const filePath = join(currentPath, fileName);
 
-    await open(filePath, 'wx');
+    await writeFile(filePath, '', { flag: 'wx' });
 };
 
 export default add;

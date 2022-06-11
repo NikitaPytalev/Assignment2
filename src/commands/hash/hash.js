@@ -1,4 +1,4 @@
-import { OPERATION_FAILED } from '../consts.js';
+import { OPERATION_FAILED } from '../../consts.js';
 import { readFile, lstat } from 'fs/promises';
 import { isAbsolute, join } from 'path';
 import { createHash } from 'crypto';

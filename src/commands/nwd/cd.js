@@ -1,4 +1,4 @@
-import { OPERATION_FAILED } from '../consts.js';
+import { OPERATION_FAILED } from '../../consts.js';
 
 const cd = async payload => {
     const fileManager = payload.source;

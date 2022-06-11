@@ -1,4 +1,4 @@
-import { OPERATION_FAILED } from '../consts.js';
+import { OPERATION_FAILED } from '../../consts.js';
 import { lstat } from 'fs/promises';
 import  fs from 'fs';
 import zlib from 'zlib';

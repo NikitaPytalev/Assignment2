@@ -1,17 +1,17 @@
 import { INVALID_INPUT } from '../consts.js';
-import add from './add.js';
-import cat from './cat.js';
-import cd from './cd.js';
-import compress from './compress.js';
-import cp from './cp.js';
-import decompress from './decompress.js';
-import hash from './hash.js';
-import ls from './ls.js';
-import mv from './mv.js';
-import os from './os.js';
-import rm from './rm.js';
-import rn from './rn.js';
-import up from './up.js';
+import add from './fs/add.js';
+import cat from './fs/cat.js';
+import cd from './nwd/cd.js';
+import compress from './zip/compress.js';
+import cp from './fs/cp.js';
+import decompress from './zip/decompress.js';
+import hash from './hash/hash.js';
+import ls from './nwd/ls.js';
+import mv from './fs/mv.js';
+import os from './os/os.js';
+import rm from './fs/rm.js';
+import rn from './fs/rn.js';
+import up from './nwd/up.js';
 
 const commands = {
     add,

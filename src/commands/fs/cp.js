@@ -1,10 +1,10 @@
-import { OPERATION_FAILED } from '../consts.js';
-import { rename, lstat } from 'fs/promises';
+import { OPERATION_FAILED } from '../../consts.js';
+import { copyFile, lstat } from 'fs/promises';
 import { basename, isAbsolute, join } from 'path';
 
-const mv = async payload => {
+const cp = async payload => {
     const { currentPath } = payload.source;
-    
+
     let pathToFile = payload.args[0];
     let pathToNewDirectory = payload.args[1];
 
@@ -17,15 +17,15 @@ const mv = async payload => {
     }
 
     const isDirectory = await (await lstat(pathToNewDirectory)).isDirectory();
-    if (!isDirectory) throw Error(consts.OPERATION_FAILED);
+    if (!isDirectory) throw Error(OPERATION_FAILED);
 
-    const newfilePath = join(pathToNewDirectory, basename(pathToFile));
-
+    const newFilePath = join(pathToNewDirectory, basename(pathToFile));
+    
     try{
-        await rename(pathToFile, newfilePath);
+        await copyFile(pathToFile, newFilePath);
     } catch {
         throw new Error(OPERATION_FAILED);
     }
 };
 
-export default mv;
+export default cp;

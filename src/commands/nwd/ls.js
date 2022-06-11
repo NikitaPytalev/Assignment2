@@ -1,4 +1,4 @@
-import { OPERATION_FAILED } from '../consts.js';
+import { OPERATION_FAILED } from '../../consts.js';
 import { readdir } from 'fs/promises';
 
 const ls = async payload => {

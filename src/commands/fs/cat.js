@@ -1,4 +1,4 @@
-import { OPERATION_FAILED } from '../consts.js';
+import { OPERATION_FAILED } from '../../consts.js';
 import { readFile, lstat } from 'fs/promises';
 import { join } from 'path';
 

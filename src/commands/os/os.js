@@ -1,5 +1,5 @@
+import { INVALID_INPUT } from '../../consts.js';
 import { arch, cpus, EOL, homedir, userInfo } from 'os';
-import { INVALID_INPUT } from '../consts.js';
 
 const os = async payload => {
     const arg = payload.args[0];

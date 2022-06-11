@@ -24,14 +24,8 @@ class FileManager {
         const commandName = args.shift();
 
         const command = getCommand(commandName);
-
-        const payload = {
-            source: this,
-            command : input,
-            args
-        };
     
-        await command(payload);
+        await command(args);
     } 
 }
 

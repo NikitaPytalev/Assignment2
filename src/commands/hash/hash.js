@@ -3,10 +3,10 @@ import * as utils from '../../utils.js';
 import { readFile } from 'fs/promises';
 import { createHash } from 'crypto';
 
-const hash = async payload => {
-    utils.validateArgumentsCount(payload.args.length, 1);
+const hash = async args => {
+    utils.validateArgumentsCount(args.length, 1);
 
-    const filePath = utils.toAbsolute(payload.args[0]);
+    const filePath = utils.toAbsolute(args[0]);
 
     await utils.validateIsFile(filePath);
 

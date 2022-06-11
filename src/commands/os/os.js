@@ -2,10 +2,10 @@ import { INVALID_INPUT } from '../../consts.js';
 import { validateArgumentsCount } from '../../utils.js';
 import { arch, cpus, EOL, homedir, userInfo } from 'os';
 
-const os = async payload => {
-    validateArgumentsCount(payload.args.length, 1);
+const os = async args => {
+    validateArgumentsCount(args.length, 1);
 
-    const arg = payload.args[0];
+    const arg = args[0];
 
     switch (arg) {
         case '--EOL':

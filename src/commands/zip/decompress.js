@@ -1,15 +1,20 @@
-import { OPERATION_FAILED } from '../../consts.js';
+import { BROTLI_EXT, OPERATION_FAILED } from '../../consts.js';
 import * as utils from '../../utils.js';
 import fs from 'fs';
 import zlib from 'zlib';
+import { extname } from 'path';
 
-const decompress = async payload => {
-    utils.validateArgumentsCount(payload.args.length, 2);
+const decompress = async args => {
+    utils.validateArgumentsCount(args.length, 2);
 
-    const src = utils.toAbsolute(payload.args[0]);
-    let dest = utils.toAbsolute(payload.args[1]);
+    const src = utils.toAbsolute(args[0]);
+    let dest = utils.toAbsolute(args[1]);
 
     await utils.validateIsFile(src);
+
+    if (!extname(src).endsWith(BROTLI_EXT)) {
+        throw new Error(OPERATION_FAILED);
+    }
 
     try{
         var unzip = zlib.createBrotliDecompress();

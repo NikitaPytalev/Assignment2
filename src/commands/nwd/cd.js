@@ -1,10 +1,10 @@
 import { OPERATION_FAILED } from '../../consts.js';
 import * as utils from '../../utils.js';
 
-const cd = async payload => {
-    utils.validateArgumentsCount(payload.args.length, 1);
+const cd = async args => {
+    utils.validateArgumentsCount(args.length, 1);
 
-    const dest = utils.toAbsolute(payload.args[0]);
+    const dest = utils.toAbsolute(args[0]);
 
     try{
         await utils.validateIsDirectory(dest);

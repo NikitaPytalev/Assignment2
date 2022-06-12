@@ -15,7 +15,7 @@ const os = async args => {
             const cpuList = cpus().map(cpu => {
                 const cpuView = {
                     model: cpu.model,
-                    speed: cpu.speed
+                    speed: toGhz(cpu.speed)
                 };
 
                 return cpuView;
@@ -35,6 +35,12 @@ const os = async args => {
         default:
             throw new Error(INVALID_INPUT);
     }
+};
+
+const toGhz = speed => {
+    speed = speed / 1000
+    const speedInGhz = speed < 0.1 ? speed * 100 : speed
+    return speedInGhz + ' GHz'
 };
 
 export default os;

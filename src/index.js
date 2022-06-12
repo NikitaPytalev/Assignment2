@@ -1,22 +1,27 @@
 import getCommand from './commands/index.js';
 import { homedir } from 'os';
+import readline from 'readline';
 
 const userName = getUserNameFromArgs();
 
 console.log(`Welcome to the File Manager, ${ userName }!`);
 
 process.chdir(homedir());
-
 printCurrentDirectoryMessage(process.cwd());
 
-process.stdin.on('data', async input => {
+var rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-    const stringInput = input.toString().trim()
+rl.on("line", async input => {
+    const stringInput = input.toString().trim();
+    
     if(stringInput === ".exit") {
         printGoodbyeMessage(userName);
         process.exit();
     }
-
+    
     try {
         await execute(stringInput);
     } catch (e) {
@@ -26,7 +31,7 @@ process.stdin.on('data', async input => {
     printCurrentDirectoryMessage(process.cwd());
 });
 
-process.on('SIGINT', () => {
+rl.on("SIGINT", () => {
     printGoodbyeMessage(userName);
     process.exit();
 });
@@ -39,7 +44,7 @@ function getUserNameFromArgs () {
 };
 
 function printCurrentDirectoryMessage (currentPath) {
-    console.log(`You are currently in ${ currentPath }`)
+    console.log(`You are currently in ${ currentPath }`);
 }
 
 function printGoodbyeMessage (userName) {

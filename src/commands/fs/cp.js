@@ -1,6 +1,6 @@
 import { OPERATION_FAILED } from '../../consts.js';
 import * as utils from '../../utils.js';
-import { copyFile } from 'fs/promises';
+import fs from 'fs';
 import { basename, join } from 'path';
 
 const cp = async args => {
@@ -14,8 +14,11 @@ const cp = async args => {
         await utils.validateIsDirectory(dest);
     
         const destFilePath = join(dest, basename(src));
-        
-        await copyFile(src, destFilePath);
+
+        const readStream = fs.createReadStream(src)
+        const writeStream = fs.createWriteStream(destFilePath);
+
+        readStream.pipe(writeStream);
     } catch {
         throw new Error(OPERATION_FAILED);
     }

@@ -1,7 +1,8 @@
 import { OPERATION_FAILED } from '../../consts.js';
 import * as utils from '../../utils.js';
-import { readFile } from 'fs/promises';
+import { pipeline } from 'stream/promises';
 import { createHash } from 'crypto';
+import fs from 'fs';
 
 const hash = async args => {
     utils.validateArgumentsCount(args.length, 1);
@@ -10,11 +11,16 @@ const hash = async args => {
 
     try{
         await utils.validateIsFile(filePath);
-        
-        const data = await readFile(filePath);
-        const hex = createHash('sha256').update(data).digest('hex');
 
-        console.log(hex);
+        const readable = fs.createReadStream(filePath);
+        const hash = createHash('sha256').setEncoding('hex');
+
+        await pipeline(
+            readable,
+            hash
+        );
+
+        console.log(hash.read());
     } catch {
         throw new Error(OPERATION_FAILED);
     }
